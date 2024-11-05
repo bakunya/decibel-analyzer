@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<link rel="icon" type="image/svg+xml" href="https://bakunya.pages.dev/favicon/favicon.ico">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Discover the best decibel analyzer to measure sound levels accurately. Analyze audio with our advanced tools for safe listening.">
+	<meta name="keywords" content="decibel analyzer, sound level meter, audio analysis, dB measurement, noise level, safe listening, audio tools">
+	<meta name="robots" content="index, follow">
+	<!-- Open Graph tags for Facebook -->
+	<meta property="og:title" content="Decibel Analyzer - Measure Sound Levels Accurately">
+	<meta property="og:description" content="Discover the best decibel analyzer to measure sound levels accurately. Analyze audio with our advanced tools for safe listening.">
+	<meta property="og:image" content="https://avatars.githubusercontent.com/u/67939204?v=4">
+	<meta property="og:url" content="URL_TO_YOUR_PAGE">
+	<meta property="og:type" content="website">
+
+	<!-- Twitter Card tags -->
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:title" content="Decibel Analyzer - Measure Sound Levels Accurately">
+	<meta name="twitter:description" content="Discover the best decibel analyzer to measure sound levels accurately. Analyze audio with our advanced tools for safe listening.">
+	<meta name="twitter:image" content="https://avatars.githubusercontent.com/u/67939204?v=4">
+	<meta name="twitter:url" content="URL_TO_YOUR_PAGE">
+	<title>Decibel Analyzer - Accurate Sound Level Measurement Tools</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			text-align: center;
+			min-width: 900px;
+		}
+
+		h1 {
+			margin-top: 50px;
+			margin-bottom: 0;
+		}
+
+		canvas {
+			border: 1px solid black;
+		}
+
+		.container {
+			max-width: 800px;
+			margin: 0 auto;
+		}
+
+		.divider {
+			margin: 50px 0;
+			display: flex;
+			flex-direction: column;
+			justify-content: start;
+			justify-self: start;
+		}
+
+		.divider .input {
+			display: flex;
+			justify-content: start;
+			align-items: start;
+			flex-direction: column;
+			margin-bottom: 30px;
+			gap: 10px;
+		}
+
+		.divider .input input {
+			width: 100%;
+			padding: 5px;
+		}
+
+		.res {
+			display: flex;
+			justify-content: start;
+			flex-direction: column;
+			width: 100%;
+			align-items: start;
+			margin: 40px 0;
+			gap: 15px;
+		}
+
+		.res p {
+			margin: 0 !important;
+			display: inline-block;
+		}
+
+		.res hr {
+			width: 100%;
+			margin: 10px 0;
+		}
+
+		.res-2 {
+			display: flex;
+			justify-content: start;
+			flex-direction: column;
+			width: 100%;
+			align-items: start;
+			margin: 10px 0;
+			gap: 10px;
+		}
+
+		.alert-error {
+			background-color: #f8d7da;
+			color: #721c24;
+			padding: 10px;
+			margin: 20px 0;
+			border: 1px solid #f5c6cb;
+			border-radius: 5px;
+		}
+
+		.alert-warning {
+			background-color: #fff3cd;
+			color: #856404;
+			padding: 10px;
+			margin: 20px 0;
+			border: 1px solid #ffeeba;
+			border-radius: 5px;
+		}
+
+		h2 {
+			color: #2c3e50;
+		}
+
+		.section {
+			background: #fff;
+			padding: 15px;
+			margin-bottom: 20px;
+			border-radius: 5px;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+		}
+
+		.safe {
+			border-left: 5px solid #2ecc71;
+			background-color: #2ecc7032;
+			/* Green */
+		}
+
+		.warning {
+			border-left: 5px solid #e74c3c;
+			background-color: #e74c3c32;
+			/* Red */
+		}
+
+		.hidden {
+			display: none;
+		}
+
+		.badge {
+			display: inline-flex;
+			align-items: center;
+			background-color: #4CAF50;
+			/* Green background */
+			color: white;
+			/* White text */
+			padding: 10px 15px;
+			/* Padding around text */
+			border-radius: 5px;
+			/* Rounded corners */
+			font-family: Arial, sans-serif;
+			/* Font */
+			text-decoration: none;
+			/* No underline */
+		}
+
+		.badge-link {
+			margin-left: 10px;
+			/* Space between text and link */
+			color: #FFD700;
+			/* Gold color for the link */
+			text-decoration: underline;
+			/* Underline the link */
+		}
+
+		.badge-link:hover {
+			color: #FFC107;
+			/* Change color on hover */
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<div class="badge">
+			<span class="badge-text">Crafted by Bakunya</span>
+			<a href="https://github.com/bakunya/decibel-analyzer" target="_blank" class="badge-link">Check it on GitHub!</a>
+		</div>
+		<h1>Audio Frequency Analyzer</h1>
+		<div class="alert-error">
+			<h5>Warning: This is a simple audio frequency analyzer. It may not be accurate.</h5>
+		</div>
+		<div class="divider">
+			<div class="input">
+				<label for="">Your current volume (0 - 100)</label>
+				<input type="number" max="100" min="0" value="10">
+			</div>
+			<div>
+				<input type="file" id="audioUpload" accept="audio/*">
+				<button id="playButton">Play Audio</button>
+			</div>
+		</div>
+		<canvas id="frequencyCanvas" width="800" height="200"></canvas>
+		<div class="alert-warning">
+			<h5>Wait until the audio is finished to get more better calculation</h5>
+		</div>
+		<div class="res">
+			<p><strong>Quick Analys</strong></p>
+			<div class="res-2">
+				<p>Max Decibels: <strong id="quick-analys">...</strong></p>
+			</div>
+		</div>
+		<hr>
+		<div class="res">
+			<p><strong>Full Analys (enhance with "A Weighted")</strong></p>
+			<div class="res-2">
+				<p>Average Decibels: <strong id="full-analys-avg">...</strong></p>
+				<p>Max Decibels: <strong id="full-analys-max">...</strong></p>
+			</div>
+		</div>
+
+		<div class="section safe hidden">
+			<h2>Safe Volume Level</h2>
+			<strong style="text-align: left; display: block; margin-bottom: 40px;">If you user IEM, headphones, or
+				earphones, the maximum decibel is about 70dB.</strong>
+			<strong style="text-align: left; display: block; margin-bottom: 20px;">Tips:</strong>
+			<p style="text-align: left; margin: 10px 0;">
+				<strong>60/60 Rule:</strong> As a general guideline, listen at no more than 60% of the maximum volume
+				for no longer than 60 minutes per session.
+			</p>
+			<p style="text-align: left; margin: 10px 0;">
+				<strong>Take Regular Breaks:</strong> After 60 minutes of listening, take a 5-10 minute break to give
+				your ears time to recover.
+			</p>
+		</div>
+
+		<div class="section warning hidden">
+			<h2>High Volume Level</h2>
+			<strong style="text-align: left; display: block;">If you user IEM, headphones, or earphones, the maximum
+				decibel is about 70dB.</strong>
+			<p style="text-align: left;">
+				The volume you are using is too high. Prolonged exposure to high volumes can lead to hearing damage.
+				Please lower the volume to protect your hearing and ensure a safer listening experience.
+			</p>
+		</div>
+
+	</div>
+
+	<script>
+		const fileInput = document.getElementById('audioUpload');
+		const playButton = document.getElementById('playButton');
+		const canvas = document.getElementById('frequencyCanvas');
+		const canvasContext = canvas.getContext('2d');
+		const aRef = 20e-6;
+
+		let volume = 0;
+		let decibelSteps = [];
+		let animationFrameId;
+		let audioContext;
+		let analyser;
+		let source;
+
+		const aWeighting = {
+			6.3: -85.4,
+			8: -77.6,
+			10: -70.4,
+			12.5: -63.6,
+			16: -56.4,
+			20: -50.4,
+			25: -44.8,
+			31.5: -39.5,
+			40: -34.5,
+			50: -30.3,
+			63: -26.2,
+			80: -22.4,
+			100: -19.1,
+			125: -16.2,
+			160: -13.2,
+			200: -10.8,
+			250: -8.7,
+			315: -6.6,
+			400: -4.8,
+			500: -3.2,
+			630: -1.9,
+			800: -0.8,
+			1000: 0.0,
+			1250: 0.6,
+			1600: 1.0,
+			2000: 1.2,
+			2500: 1.3,
+			3150: 1.2,
+			4000: 1.0,
+			5000: 0.6,
+			6300: -0.1,
+			8000: -1.1,
+			10000: -2.5,
+			12500: -4.3,
+			16000: -6.7,
+			20000: -9.3
+		};
+
+		function getMaxAmplitude(channelData) {
+			let maxAmplitude = 0;
+
+			for (let i = 0; i < channelData.length; i++) {
+				const absValue = Math.abs(channelData[i]);
+				if (absValue > maxAmplitude) {
+					maxAmplitude = absValue;
+				}
+			}
+
+			return maxAmplitude;
+		}
+
+		function calculateWeightedDecibels(dataArray) {
+			const sampleRate = audioContext.sampleRate;
+			const frequencyBinCount = analyser.frequencyBinCount;
+			const frequencyStep = sampleRate / 2 / frequencyBinCount;
+
+			const weightedDb = dataArray.map((value, index) => {
+				const frequency = index * frequencyStep;
+				const aWeightingValue = aWeighting[Math.round(frequency)] || 0;
+				const linearAmplitude = value / 255;
+				const pressure = (linearAmplitude * (volume / 100))
+				const dB = pressure > 0 ? 20 * Math.log10(pressure / aRef) : -Infinity;
+				return dB + aWeightingValue;
+			});
+
+			return weightedDb.reduce((acc, value) => acc + value, 0) / weightedDb.length;
+		}
+
+		function playAudio(audioBuffer) {
+			return new Promise((resolve, reject) => {
+				source = audioContext.createBufferSource();
+				source.buffer = audioBuffer;
+				source.connect(analyser);
+				analyser.connect(audioContext.destination);
+				source.start(0);
+
+				source.onended = function () {
+					cancelAnimationFrame(animationFrameId);
+					resolve(decibelSteps);
+				};
+
+				decibelSteps = [];
+				drawCanvas(audioBuffer);
+			})
+		}
+
+		function drawCanvas(audioBuffer) {
+			animationFrameId = requestAnimationFrame(drawCanvas);
+			const dataArray = new Uint8Array(analyser.frequencyBinCount);
+			analyser.getByteFrequencyData(dataArray);
+
+			const weightedDecibels = calculateWeightedDecibels(dataArray);
+			decibelSteps.push(weightedDecibels);
+
+			canvasContext.fillStyle = 'rgb(200, 200, 200)';
+			canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+			const barWidth = (canvas.width / dataArray.length) * 2.5;
+			let barHeight;
+			let x = 0;
+
+			for (let i = 0; i < dataArray.length; i++) {
+				barHeight = dataArray[i];
+
+				canvasContext.fillStyle = 'rgb(' + (barHeight + 100) + ',50,50)';
+				canvasContext.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight / 2);
+
+				x += barWidth + 1;
+			}
+		}
+
+		async function quickAnalys(audioBuffer) {
+			const dataArray = new Uint8Array(analyser.frequencyBinCount);
+			const maxAmplitude = getMaxAmplitude(audioBuffer.getChannelData(0));
+
+			const adjustedAmplitude = maxAmplitude * (volume / 100);
+			const maxDecibels = 20 * Math.log10(adjustedAmplitude / aRef);
+
+			return maxDecibels
+		}
+
+		playButton.addEventListener('click', async () => {
+			if (fileInput.files.length === 0) {
+				alert("Please select an audio file first!");
+				return;
+			}
+
+			if (!audioContext) {
+				audioContext = new (window.AudioContext || window.webkitAudioContext)();
+				analyser = audioContext.createAnalyser();
+				analyser.fftSize = 4096;
+			}
+
+			volume = Number(document.querySelector('input[type="number"]').value);
+			if (volume < 0 || volume > 100) {
+				alert("Volume must be between 0 and 100");
+				return;
+			}
+
+			const audioData = await fileInput.files[0].arrayBuffer();
+			const audioBuffer = await audioContext.decodeAudioData(audioData);
+
+			const result = await quickAnalys(audioBuffer);
+			document.getElementById('quick-analys').innerText = `${result.toFixed(2)} dB`;
+
+			const res = await playAudio(audioBuffer);
+			const avg = res.reduce((a, b) => a + b, 0) / res.length;
+			const max = Math.max(...res);
+
+			document.getElementById('full-analys-avg').innerText = `${avg.toFixed(2)} dB`;
+			document.getElementById('full-analys-max').innerText = `${max.toFixed(2)} dB`;
+
+			if (max > 70) {
+				document.querySelector('.safe').classList.add('hidden');
+				document.querySelector('.warning').classList.remove('hidden');
+			} else {
+				document.querySelector('.safe').classList.remove('hidden');
+				document.querySelector('.warning').classList.add('hidden');
+			}
+		});
+	</script>
+</body>
+
+</html>
